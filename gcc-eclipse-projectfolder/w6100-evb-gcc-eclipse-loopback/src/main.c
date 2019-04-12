@@ -45,7 +45,6 @@
 #include "wizchip_conf.h"
 #include "W6100RelFunctions.h"
 
-#include "loopback.h"
 
 // ----------------------------------------------------------------------------
 //
@@ -254,8 +253,8 @@ main(int argc, char* argv[])
 		loopback_tcps(3,ethBuf3,50003,AS_IPV4);
 		loopback_tcps(4,ethBuf4,50004,AS_IPV6);
 		loopback_tcps(5,ethBuf5,50005,AS_IPDUAL);
-//		loopback_tcpc(6,ethBuf6,svr_ipv4,50006,AS_IPV4);
-//		loopback_tcpc(7,ethBuf7,svr_ipv6,50007,AS_IPV6);
+		loopback_tcpc(6,ethBuf6,svr_ipv4,50006,AS_IPV4);
+		loopback_tcpc(7,ethBuf7,svr_ipv6,50007,AS_IPV6);
 
 		if((tmpTime = getDevtime()) != currTime)
 		{

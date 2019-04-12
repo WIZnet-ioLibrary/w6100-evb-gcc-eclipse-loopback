@@ -7,7 +7,11 @@
             			
             <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.677796553" moduleId="org.eclipse.cdt.core.settings" name="Debug">
                 				
-                <externalSettings/>
+                <externalSettings>
+                    					
+                    <externalSetting/>
+                    				
+                </externalSettings>
                 				
                 <extensions>
                     					
@@ -151,21 +155,19 @@
                                     									
                                     <listOptionValue builtIn="false" value="&quot;../system/include/stm32f1-stdperiph&quot;"/>
                                     									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/w6100-evb-gcc-eclipse-loopback/src/io6Library}&quot;"/>
+                                    <listOptionValue builtIn="false" value="&quot;C:\workspace\test_workspace\w6100-evb-gcc-eclipse\io6Library&quot;"/>
                                     									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/w6100-evb-gcc-eclipse-loopback/src/io6Library/Ethernet}&quot;"/>
+                                    <listOptionValue builtIn="false" value="&quot;C:\workspace\test_workspace\w6100-evb-gcc-eclipse\io6Library\Ethernet&quot;"/>
                                     									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/w6100-evb-gcc-eclipse-loopback/src/io6Library/Ethernet/W6100}&quot;"/>
+                                    <listOptionValue builtIn="false" value="&quot;C:\workspace\test_workspace\w6100-evb-gcc-eclipse\io6Library\Ethernet\W6100&quot;"/>
                                     									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/w6100-evb-gcc-eclipse-loopback/src/io6Library/Application}&quot;"/>
+                                    <listOptionValue builtIn="false" value="&quot;C:\workspace\test_workspace\w6100-evb-gcc-eclipse\io6Library\Application&quot;"/>
                                     									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/w6100-evb-gcc-eclipse-loopback/src/io6Library/Application/loopback}&quot;"/>
+                                    <listOptionValue builtIn="false" value="&quot;C:\workspace\test_workspace\w6100-evb-gcc-eclipse\io6Library\Internet\DHCP6&quot;"/>
                                     									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/w6100-evb-gcc-eclipse-loopback/src/io6Library/Internet/DHCP6}&quot;"/>
+                                    <listOptionValue builtIn="false" value="&quot;C:\workspace\test_workspace\w6100-evb-gcc-eclipse\io6Library\Internet\DNS&quot;"/>
                                     									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/w6100-evb-gcc-eclipse-loopback/src/io6Library/Internet/DNS}&quot;"/>
-                                    									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/w6100-evb-gcc-eclipse-loopback/src/PlatformHandler}&quot;"/>
+                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/W6100-EVB-gcc-eclipse/src/PlatformHandler}&quot;"/>
                                     								
                                 </option>
                                 								
@@ -340,6 +342,8 @@
                     </folderInfo>
                     					
                     <sourceEntries>
+                        						
+                        <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="io6Library"/>
                         						
                         <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
                         						
