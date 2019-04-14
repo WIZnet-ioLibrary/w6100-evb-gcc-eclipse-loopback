@@ -19,19 +19,21 @@
 DMA_InitTypeDef		DMA_RX_InitStructure, DMA_TX_InitStructure;
 
 
-
 void W6100Initialze(void)
 {
 	intr_kind temp;
+	uint8_t phylink;
 	unsigned char W6100_AdrSet[2][8] = {{2,2,2,2,2,2,2,2},{2,2,2,2,2,2,2,2}};
 	//unsigned char W6100_AdrSet[2][8] = {{8,0,0,0,0,0,0,0},{8,0,0,0,0,0,0,0}};
 	/*
 	 */
 	do{
-			if(ctlwizchip(CW_GET_PHYLINK,(void*)&temp) == -1){
+			ctlwizchip(CW_GET_PHYLINK,(void*)&phylink);
+			if(phylink == -1){
 				printf("Unknown PHY link status.\r\n");
 			}
-		}while(temp == PHY_LINK_OFF);
+	}while(phylink == PHY_LINK_OFF);
+
 	printf("PHY OK.\r\n");
 
 	temp = IK_DEST_UNREACH;

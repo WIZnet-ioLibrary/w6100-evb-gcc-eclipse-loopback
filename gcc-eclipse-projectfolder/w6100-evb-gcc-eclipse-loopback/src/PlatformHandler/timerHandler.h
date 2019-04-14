@@ -30,4 +30,7 @@ uint16_t getDeviceUptime_msec(void);
 void set_phylink_time_check(uint8_t enable);
 uint32_t get_phylink_downtime(void);
 
+void set_runled_msec(uint16_t setmsec);
+uint16_t get_runled_msec(void);
+
 #endif /* PLATFORMHANDLER_TIMERHANDLER_H_ */

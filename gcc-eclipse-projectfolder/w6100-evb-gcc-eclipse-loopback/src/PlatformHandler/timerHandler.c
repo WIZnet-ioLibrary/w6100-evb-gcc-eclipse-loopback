@@ -8,6 +8,8 @@
 
 #include "timerHandler.h"
 
+#include "../../../../../w6100-evb-gcc-eclipse/gcc-eclipse-projectfolder/w6100-evb-gcc-eclipse/include/BlinkLed.h"
+
 volatile uint16_t msec_cnt = 0;
 volatile uint8_t  sec_cnt = 0;
 volatile uint8_t  min_cnt = 0;
@@ -15,6 +17,9 @@ volatile uint8_t  hour_cnt = 0;
 volatile uint16_t day_cnt = 0;
 volatile uint32_t devtime_sec = 0;
 volatile uint32_t devtime_msec = 0;
+
+
+volatile uint16_t runled_msec = 0;
 
 uint8_t enable_phylink_check = 1;
 volatile uint32_t phylink_down_time_msec;
@@ -47,20 +52,13 @@ void Timer2_ISR(void)
 
 	devtime_msec++;
 
-//	seg_timer_msec();		// [msec] time counter for SEG (S2E)
-//	segcp_timer_msec();		// [msec] time counter for SEGCP (Config)
-//	device_timer_msec();	// [msec] time counter for DeviceHandler (fw update)
+	runled_msec++;
 
-//	if(enable_phylink_check) // will be modified
-//	{
-//		if(phylink_down_time_msec < 0xffffffff)	phylink_down_time_msec++;
-//		else									phylink_down_time_msec = 0;
-//	}
-//
-//	if(flag_s2e_application_running)
-//	{
-//		gpio_handler_timer_msec();
-//	}
+	if(runled_msec == 1000)
+	{
+		runled_msec = 0;
+		toggle_runled();
+	}
 
 	/* Second Process */
 	if(msec_cnt >= 1000) //second //if((msec_cnt % 1000) == 0)
@@ -161,5 +159,15 @@ void set_phylink_time_check(uint8_t enable)
 uint32_t get_phylink_downtime(void)
 {
 	return phylink_down_time_msec;
+}
+
+void set_runled_msec(uint16_t setmsec)
+{
+	runled_msec = setmsec;
+}
+
+uint16_t get_runled_msec(void)
+{
+	return runled_msec;
 }
 

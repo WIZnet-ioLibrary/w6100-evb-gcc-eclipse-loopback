@@ -25,7 +25,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "BlinkLed.h"
+#include "../../../../w6100-evb-gcc-eclipse/gcc-eclipse-projectfolder/w6100-evb-gcc-eclipse/include/BlinkLed.h"
 
 // ----------------------------------------------------------------------------
 

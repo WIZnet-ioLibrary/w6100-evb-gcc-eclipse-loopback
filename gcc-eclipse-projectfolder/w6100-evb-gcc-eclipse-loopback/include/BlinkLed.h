@@ -87,6 +87,13 @@ blink_led_off(void)
 #endif
 }
 
+inline void
+__attribute__((always_inline))
+toggle_runled(void)
+{
+	GPIO_WriteBit(BLINK_GPIOx(BLINK_PORT_NUMBER), BLINK_PIN_MASK(BLINK_PIN_NUMBER),
+			1 - GPIO_ReadOutputDataBit(BLINK_GPIOx(BLINK_PORT_NUMBER), BLINK_PIN_MASK(BLINK_PIN_NUMBER)));
+}
 // ----------------------------------------------------------------------------
 
 #endif // BLINKLED_H_

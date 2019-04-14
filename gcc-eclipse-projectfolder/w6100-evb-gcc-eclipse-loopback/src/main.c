@@ -32,8 +32,6 @@
 #include "diag/Trace.h"
 
 #include "Timer.h"
-#include "BlinkLed.h"
-
 #include "nvicHandler.h"
 #include "rccHandler.h"
 #include "gpioHandler.h"
@@ -44,6 +42,7 @@
 
 #include "wizchip_conf.h"
 #include "W6100RelFunctions.h"
+#include "../../../../w6100-evb-gcc-eclipse/gcc-eclipse-projectfolder/w6100-evb-gcc-eclipse/include/BlinkLed.h"
 
 
 // ----------------------------------------------------------------------------
@@ -184,7 +183,7 @@ main(int argc, char* argv[])
   Timer_Configuration();
 
 
-  printf("System clock: %ld Hz\n", SystemCoreClock);
+  printf("System clock: %ld Hz\r\n", SystemCoreClock);
 
 
 
@@ -196,6 +195,7 @@ main(int argc, char* argv[])
 						0xea, 0xf4, 0xf4, 0x2d};
 
   uint16_t version;
+  uint8_t phylink;
 
 #if _WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_
 	/* SPI method callback registration */
@@ -256,19 +256,6 @@ main(int argc, char* argv[])
 		loopback_tcpc(6,ethBuf6,svr_ipv4,50006,AS_IPV4);
 		loopback_tcpc(7,ethBuf7,svr_ipv6,50007,AS_IPV6);
 
-		if((tmpTime = getDevtime()) != currTime)
-		{
-			currTime = tmpTime;
-			if(is_off)
-			{
-				blink_led_on();
-				is_off = 0;
-			}else
-			{
-				blink_led_off();
-				is_off = 1;
-			}
-		}
 	}
   // Infinite loop, never return.
 }
