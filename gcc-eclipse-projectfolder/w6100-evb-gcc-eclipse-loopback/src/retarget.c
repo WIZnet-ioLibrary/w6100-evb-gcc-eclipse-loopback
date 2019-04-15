@@ -26,14 +26,14 @@
 // Replaced the defines for UART Selector to Callback functions.
 #define USING_UART1
 #if defined (USING_UART0)
-	#define UART_SEND_BYTE(ch)  UartPutc(USART0,ch)
-	#define UART_RECV_BYTE()    UartGetc(USART0)
+    #define UART_SEND_BYTE(ch)  UartPutc(USART0,ch)
+    #define UART_RECV_BYTE()    UartGetc(USART0)
 #elif defined (USING_UART1)
-	#define UART_SEND_BYTE(ch)  UartPutc(USART1,ch)
-	#define UART_RECV_BYTE()    UartGetc(USART1)
+    #define UART_SEND_BYTE(ch)  UartPutc(USART1,ch)
+    #define UART_RECV_BYTE()    UartGetc(USART1)
 #elif defined (USING_UART2)
-	#define UART_SEND_BYTE(ch)  UartPutc(USART2,ch)
-	#define UART_RECV_BYTE()    UartGetc(USART2)
+    #define UART_SEND_BYTE(ch)  UartPutc(USART2,ch)
+    #define UART_RECV_BYTE()    UartGetc(USART2)
 #endif
 
 
@@ -76,7 +76,7 @@ void _ttywrch(int ch) {
 }
 
 void _sys_exit(int return_code) {
-   label:  goto label;  /* endless loop */
+    label:  goto label;  /* endless loop */
 }
 
 #elif defined (__GNUC__)
@@ -87,11 +87,13 @@ void _sys_exit(int return_code) {
 
 __attribute__ ((used))  int _write (int fd, char *ptr, int len)
 {
-  int i;
-  for (i=0; i<len;i++) {
-    UART_SEND_BYTE(ptr[i]); // call character output function
-  }
-  return len;
+    int i;
+    for (i=0; i<len;i++)
+    {
+        UART_SEND_BYTE(ptr[i]); // call character output function
+    }
+
+    return len;
 }
 #else //using TOOLCHAIN_IAR
 

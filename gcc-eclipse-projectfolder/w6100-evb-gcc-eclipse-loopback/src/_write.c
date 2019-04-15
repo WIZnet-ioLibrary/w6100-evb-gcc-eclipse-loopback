@@ -57,14 +57,14 @@ _write (int fd __attribute__((unused)), const char* buf __attribute__((unused)),
 {
 #if defined(TRACE)
   // STDOUT and STDERR are routed to the trace device
-  if (fd == 1 || fd == 2)
+    if (fd == 1 || fd == 2)
     {
-      return trace_write (buf, nbyte);
+        return trace_write (buf, nbyte);
     }
 #endif // TRACE
 
-  errno = ENOSYS;
-  return -1;
+    errno = ENOSYS;
+    return -1;
 }
 
 // ----------------------------------------------------------------------------

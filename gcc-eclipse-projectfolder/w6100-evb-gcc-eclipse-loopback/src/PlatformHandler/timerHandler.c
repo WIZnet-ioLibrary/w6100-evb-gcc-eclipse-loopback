@@ -26,74 +26,67 @@ volatile uint32_t phylink_down_time_msec;
 
 void Timer_Configuration(void)
 {
-	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 
-	/* Time base configuration */
-	TIM_TimeBaseStructure.TIM_Period = 1000-1;
-	TIM_TimeBaseStructure.TIM_Prescaler = (SystemCoreClock/1000000) - 1;
-	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    /* Time base configuration */
+    TIM_TimeBaseStructure.TIM_Period = 1000-1;
+    TIM_TimeBaseStructure.TIM_Prescaler = (SystemCoreClock/1000000) - 1;
+    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
-	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+    TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 
-//	/* Prescaler configuration */
-//	TIM_PrescalerConfig(TIM2, 71, TIM_PSCReloadMode_Immediate);
 
-	/* TIM enable counter */
-	TIM_Cmd(TIM2, ENABLE);
+    /* TIM enable counter */
+    TIM_Cmd(TIM2, ENABLE);
 
-	/* TIM IT enable */
-	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+    /* TIM IT enable */
+    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
 }
 
 void Timer2_ISR(void)
 {
-	msec_cnt++; // millisecond counter
+    msec_cnt++; // millisecond counter
 
-	devtime_msec++;
+    devtime_msec++;
 
-	runled_msec++;
+    runled_msec++;
 
-	if(runled_msec == 1000)
-	{
-		runled_msec = 0;
-		toggle_runled();
-	}
+    if(runled_msec >= 1000)
+    {
+        runled_msec = 0;
+        toggle_runled();
+    }
 
-	/* Second Process */
-	if(msec_cnt >= 1000) //second //if((msec_cnt % 1000) == 0)
-	{
-		msec_cnt = 0;
-		sec_cnt++;
+    /* Second Process */
+    if(msec_cnt >= 1000) //second //if((msec_cnt % 1000) == 0)
+    {
+        msec_cnt = 0;
+        sec_cnt++;
 
-//		seg_timer_sec(); // [sec] time counter for SEG
-//
-//		DHCP_time_handler();	// Time counter for DHCP timeout
-//		DNS_time_handler();		// Time counter for DNS timeout
+        devtime_sec++; // device time counter, Can be updated this counter value by time protocol like NTP.
+    }
 
-		devtime_sec++; // device time counter, Can be updated this counter value by time protocol like NTP.
-	}
+    /* Minute Process */
+    if(sec_cnt >= 60) //if((sec_cnt % 60) == 0)
+    {
+        sec_cnt = 0;
+        min_cnt++;
+    }
 
-	/* Minute Process */
-	if(sec_cnt >= 60) //if((sec_cnt % 60) == 0)
-	{
-		sec_cnt = 0;
-		min_cnt++;
-	}
-
-	/* Hour Process */
-	if(min_cnt >= 60)
-	{
-		min_cnt = 0;
-		hour_cnt++;
-	}
+    /* Hour Process */
+    if(min_cnt >= 60)
+    {
+        min_cnt = 0;
+        hour_cnt++;
+    }
 
     /* Day Process */
-	if(hour_cnt >= 24)
-	{
-		hour_cnt = 0;
-		day_cnt++;
-	}
+    if(hour_cnt >= 24)
+    {
+        hour_cnt = 0;
+        day_cnt++;
+    }
 }
 
 uint32_t getDevtime(void)

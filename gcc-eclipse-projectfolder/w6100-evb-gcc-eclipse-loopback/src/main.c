@@ -172,35 +172,36 @@ main(int argc, char* argv[])
 //  // at high speed.
 //  trace_printf("System clock: %u Hz\n", SystemCoreClock);
 //
-  timer_start();
 
-  blink_led_init();
+    timer_start();
 
-  RCC_Configuration();
-  NVIC_Configuration();
-  GPIO_Configuration();
-  USART_Configuration();
-  Timer_Configuration();
+    blink_led_init();
 
-
-  printf("System clock: %ld Hz\r\n", SystemCoreClock);
+    RCC_Configuration();
+    NVIC_Configuration();
+    GPIO_Configuration();
+    USART_Configuration();
+    Timer_Configuration();
 
 
+    printf("System clock: %ld Hz\r\n", SystemCoreClock);
 
-  uint8_t syslock = SYS_NET_LOCK;
-  uint8_t svr_ipv4[4] = {192, 168, 177, 235};
-  uint8_t svr_ipv6[16] = {0xfe, 0x80, 0x00, 0x00,
-						0x00, 0x00, 0x00, 0x00,
-						0xc1, 0x0b, 0x0a, 0xdf,
-						0xea, 0xf4, 0xf4, 0x2d};
 
-  uint16_t version;
-  uint8_t phylink;
+
+    uint8_t syslock = SYS_NET_LOCK;
+    uint8_t svr_ipv4[4] = {192, 168, 177, 235};
+    uint8_t svr_ipv6[16] = {0xfe, 0x80, 0x00, 0x00,
+                        0x00, 0x00, 0x00, 0x00,
+                        0xc1, 0x0b, 0x0a, 0xdf,
+                        0xea, 0xf4, 0xf4, 0x2d};
+
+    uint16_t version;
+    uint8_t phylink;
 
 #if _WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_
 	/* SPI method callback registration */
 	#if defined SPI_DMA
-		reg_wizchip_spi_cbfunc(spiReadByte, spiWriteByte,spiReadBurst,spiWriteBurst);
+        reg_wizchip_spi_cbfunc(spiReadByte, spiWriteByte,spiReadBurst,spiWriteBurst);
 	#else
 		reg_wizchip_spi_cbfunc(spiReadByte, spiWriteByte,0,0);
 	#endif
@@ -209,9 +210,9 @@ main(int argc, char* argv[])
 #else
 	/* Indirect bus method callback registration */
 	#if defined BUS_DMA
-			reg_wizchip_bus_cbfunc(busReadByte, busWriteByte,busReadBurst,busWriteBurst);
+        reg_wizchip_bus_cbfunc(busReadByte, busWriteByte,busReadBurst,busWriteBurst);
 	#else
-			reg_wizchip_bus_cbfunc(busReadByte, busWriteByte,0,0);
+        reg_wizchip_bus_cbfunc(busReadByte, busWriteByte,0,0);
 	#endif
 #endif
 #if _WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_BUS_INDIR_
@@ -220,104 +221,104 @@ main(int argc, char* argv[])
 	SPI_Configuration();
 #endif
 
-	resetAssert();
-	delay(100);
-	resetDeassert();
-	delay(100);
+    resetAssert();
+    delay(100);
+    resetDeassert();
+    delay(100);
 
-	W6100Initialze();
-	ctlwizchip(CW_SYS_UNLOCK,& syslock);
-	ctlwizchip(CW_GET_VER,&version);
-	printf("Version: %x\r\n", version);
+    W6100Initialze();
+    ctlwizchip(CW_SYS_UNLOCK,& syslock);
+    ctlwizchip(CW_GET_VER,&version);
+    printf("Version: %x\r\n", version);
 
-	ctlnetwork(CN_SET_NETINFO,&gWIZNETINFO);
+    ctlnetwork(CN_SET_NETINFO,&gWIZNETINFO);
 
 
-	printf("Register value after W6100 initialize!\r\n");
+    printf("Register value after W6100 initialize!\r\n");
 
-	print_network_information();
+    print_network_information();
 
-	setDevtime(0);
+    setDevtime(0);
 
-	int currTime = 0;
+    int currTime = 0;
 
-	uint8_t is_off = 1;
+    uint8_t is_off = 1;
 
-	while (1)
-	{
-		int tmpTime;
+    while (1)
+    {
+        int tmpTime;
 
-		loopback_udps(0,ethBuf0,50000,AS_IPV4);
-		loopback_udps(1,ethBuf1,50001,AS_IPV6);
-		loopback_udps(2,ethBuf2,50002,AS_IPDUAL);
-		loopback_tcps(3,ethBuf3,50003,AS_IPV4);
-		loopback_tcps(4,ethBuf4,50004,AS_IPV6);
-		loopback_tcps(5,ethBuf5,50005,AS_IPDUAL);
-		loopback_tcpc(6,ethBuf6,svr_ipv4,50006,AS_IPV4);
-		loopback_tcpc(7,ethBuf7,svr_ipv6,50007,AS_IPV6);
-
-	}
+        loopback_udps(0,ethBuf0,50000,AS_IPV4);
+        loopback_udps(1,ethBuf1,50001,AS_IPV6);
+        loopback_udps(2,ethBuf2,50002,AS_IPDUAL);
+        loopback_tcps(3,ethBuf3,50003,AS_IPV4);
+        loopback_tcps(4,ethBuf4,50004,AS_IPV6);
+        loopback_tcps(5,ethBuf5,50005,AS_IPDUAL);
+        loopback_tcpc(6,ethBuf6,svr_ipv4,50006,AS_IPV4);
+        loopback_tcpc(7,ethBuf7,svr_ipv6,50007,AS_IPV6);
+    }
   // Infinite loop, never return.
 }
 
 void delay(unsigned int count)
 {
-	uint32_t temp;
-	temp = (uint32_t)count + millis();
-	while(temp > millis()){}
+    uint32_t temp;
+    temp = (uint32_t)count + millis();
+    while(temp > millis()){}
 }
 
 void print_network_information(void)
 {
     uint8_t tmp_array[16];
-//    uint8_t i;
-	wizchip_getnetinfo(&gWIZNETINFO);
-	printf("Mac address: %02x:%02x:%02x:%02x:%02x:%02x\n\r",gWIZNETINFO.mac[0],gWIZNETINFO.mac[1],gWIZNETINFO.mac[2],gWIZNETINFO.mac[3],gWIZNETINFO.mac[4],gWIZNETINFO.mac[5]);
-	printf("IP address : %d.%d.%d.%d\n\r",gWIZNETINFO.ip[0],gWIZNETINFO.ip[1],gWIZNETINFO.ip[2],gWIZNETINFO.ip[3]);
-	printf("SM Mask	   : %d.%d.%d.%d\n\r",gWIZNETINFO.sn[0],gWIZNETINFO.sn[1],gWIZNETINFO.sn[2],gWIZNETINFO.sn[3]);
-	printf("Gate way   : %d.%d.%d.%d\n\r",gWIZNETINFO.gw[0],gWIZNETINFO.gw[1],gWIZNETINFO.gw[2],gWIZNETINFO.gw[3]);
-	printf("DNS Server : %d.%d.%d.%d\n\r",gWIZNETINFO.dns[0],gWIZNETINFO.dns[1],gWIZNETINFO.dns[2],gWIZNETINFO.dns[3]);
-	getGA6R(tmp_array);
+    wizchip_getnetinfo(&gWIZNETINFO);
+    printf("Mac address: %02x:%02x:%02x:%02x:%02x:%02x\n\r",gWIZNETINFO.mac[0],gWIZNETINFO.mac[1],gWIZNETINFO.mac[2],gWIZNETINFO.mac[3],gWIZNETINFO.mac[4],gWIZNETINFO.mac[5]);
+    printf("IP address : %d.%d.%d.%d\n\r",gWIZNETINFO.ip[0],gWIZNETINFO.ip[1],gWIZNETINFO.ip[2],gWIZNETINFO.ip[3]);
+    printf("SM Mask	   : %d.%d.%d.%d\n\r",gWIZNETINFO.sn[0],gWIZNETINFO.sn[1],gWIZNETINFO.sn[2],gWIZNETINFO.sn[3]);
+    printf("Gate way   : %d.%d.%d.%d\n\r",gWIZNETINFO.gw[0],gWIZNETINFO.gw[1],gWIZNETINFO.gw[2],gWIZNETINFO.gw[3]);
+    printf("DNS Server : %d.%d.%d.%d\n\r",gWIZNETINFO.dns[0],gWIZNETINFO.dns[1],gWIZNETINFO.dns[2],gWIZNETINFO.dns[3]);
+
+    getGA6R(tmp_array);
     printf("GW6 : %04X:%04X", ((uint16_t)tmp_array[0] << 8) | ((uint16_t)tmp_array[1]),
-    		((uint16_t)tmp_array[2] << 8) | ((uint16_t)tmp_array[3]));
+            ((uint16_t)tmp_array[2] << 8) | ((uint16_t)tmp_array[3]));
     printf(":%04X:%04X", ((uint16_t)tmp_array[4] << 8) | ((uint16_t)tmp_array[5]),
-    		((uint16_t)tmp_array[6] << 8) | ((uint16_t)tmp_array[7]));
+            ((uint16_t)tmp_array[6] << 8) | ((uint16_t)tmp_array[7]));
     printf(":%04X:%04X", ((uint16_t)tmp_array[8] << 8) | ((uint16_t)tmp_array[9]),
-    		((uint16_t)tmp_array[10] << 8) | ((uint16_t)tmp_array[11]));
-    printf(":%04X:%04X\r\n ", ((uint16_t)tmp_array[12] << 8) | ((uint16_t)tmp_array[13]),
-    		((uint16_t)tmp_array[14] << 8) | ((uint16_t)tmp_array[15]));
+            ((uint16_t)tmp_array[10] << 8) | ((uint16_t)tmp_array[11]));
+    printf(":%04X:%04X\r\n", ((uint16_t)tmp_array[12] << 8) | ((uint16_t)tmp_array[13]),
+            ((uint16_t)tmp_array[14] << 8) | ((uint16_t)tmp_array[15]));
 
-	getLLAR(tmp_array);
-	printf("LLA : %04X:%04X", ((uint16_t)tmp_array[0] << 8) | ((uint16_t)tmp_array[1]),
-			((uint16_t)tmp_array[2] << 8) | ((uint16_t)tmp_array[3]));
-	printf(":%04X:%04X", ((uint16_t)tmp_array[4] << 8) | ((uint16_t)tmp_array[5]),
-			((uint16_t)tmp_array[6] << 8) | ((uint16_t)tmp_array[7]));
-	printf(":%04X:%04X", ((uint16_t)tmp_array[8] << 8) | ((uint16_t)tmp_array[9]),
-			((uint16_t)tmp_array[10] << 8) | ((uint16_t)tmp_array[11]));
-	printf(":%04X:%04X\r\n", ((uint16_t)tmp_array[12] << 8) | ((uint16_t)tmp_array[13]),
-			((uint16_t)tmp_array[14] << 8) | ((uint16_t)tmp_array[15]));
-	getGUAR(tmp_array);
-	printf("GUA : %04X:%04X", ((uint16_t)tmp_array[0] << 8) | ((uint16_t)tmp_array[1]),
-			((uint16_t)tmp_array[2] << 8) | ((uint16_t)tmp_array[3]));
-	printf(":%04X:%04X", ((uint16_t)tmp_array[4] << 8) | ((uint16_t)tmp_array[5]),
-			((uint16_t)tmp_array[6] << 8) | ((uint16_t)tmp_array[7]));
-	printf(":%04X:%04X", ((uint16_t)tmp_array[8] << 8) | ((uint16_t)tmp_array[9]),
-			((uint16_t)tmp_array[10] << 8) | ((uint16_t)tmp_array[11]));
-	printf(":%04X:%04X\r\n", ((uint16_t)tmp_array[12] << 8) | ((uint16_t)tmp_array[13]),
-			((uint16_t)tmp_array[14] << 8) | ((uint16_t)tmp_array[15]));
+    getLLAR(tmp_array);
+    printf("LLA : %04X:%04X", ((uint16_t)tmp_array[0] << 8) | ((uint16_t)tmp_array[1]),
+            ((uint16_t)tmp_array[2] << 8) | ((uint16_t)tmp_array[3]));
+    printf(":%04X:%04X", ((uint16_t)tmp_array[4] << 8) | ((uint16_t)tmp_array[5]),
+            ((uint16_t)tmp_array[6] << 8) | ((uint16_t)tmp_array[7]));
+    printf(":%04X:%04X", ((uint16_t)tmp_array[8] << 8) | ((uint16_t)tmp_array[9]),
+            ((uint16_t)tmp_array[10] << 8) | ((uint16_t)tmp_array[11]));
+    printf(":%04X:%04X\r\n", ((uint16_t)tmp_array[12] << 8) | ((uint16_t)tmp_array[13]),
+            ((uint16_t)tmp_array[14] << 8) | ((uint16_t)tmp_array[15]));
 
-	getSUB6R(tmp_array);
-	printf("SUB6 : %04X:%04X", ((uint16_t)tmp_array[0] << 8) | ((uint16_t)tmp_array[1]),
-			((uint16_t)tmp_array[2] << 8) | ((uint16_t)tmp_array[3]));
-	printf(":%04X:%04X", ((uint16_t)tmp_array[4] << 8) | ((uint16_t)tmp_array[5]),
-			((uint16_t)tmp_array[6] << 8) | ((uint16_t)tmp_array[7]));
-	printf(":%04X:%04X", ((uint16_t)tmp_array[8] << 8) | ((uint16_t)tmp_array[9]),
-			((uint16_t)tmp_array[10] << 8) | ((uint16_t)tmp_array[11]));
-	printf(":%04X:%04X\r\n", ((uint16_t)tmp_array[12] << 8) | ((uint16_t)tmp_array[13]),
-			((uint16_t)tmp_array[14] << 8) | ((uint16_t)tmp_array[15]));
+    getGUAR(tmp_array);
+    printf("GUA : %04X:%04X", ((uint16_t)tmp_array[0] << 8) | ((uint16_t)tmp_array[1]),
+            ((uint16_t)tmp_array[2] << 8) | ((uint16_t)tmp_array[3]));
+    printf(":%04X:%04X", ((uint16_t)tmp_array[4] << 8) | ((uint16_t)tmp_array[5]),
+            ((uint16_t)tmp_array[6] << 8) | ((uint16_t)tmp_array[7]));
+    printf(":%04X:%04X", ((uint16_t)tmp_array[8] << 8) | ((uint16_t)tmp_array[9]),
+            ((uint16_t)tmp_array[10] << 8) | ((uint16_t)tmp_array[11]));
+    printf(":%04X:%04X\r\n", ((uint16_t)tmp_array[12] << 8) | ((uint16_t)tmp_array[13]),
+            ((uint16_t)tmp_array[14] << 8) | ((uint16_t)tmp_array[15]));
+
+    getSUB6R(tmp_array);
+    printf("SUB6 : %04X:%04X", ((uint16_t)tmp_array[0] << 8) | ((uint16_t)tmp_array[1]),
+            ((uint16_t)tmp_array[2] << 8) | ((uint16_t)tmp_array[3]));
+    printf(":%04X:%04X", ((uint16_t)tmp_array[4] << 8) | ((uint16_t)tmp_array[5]),
+            ((uint16_t)tmp_array[6] << 8) | ((uint16_t)tmp_array[7]));
+    printf(":%04X:%04X", ((uint16_t)tmp_array[8] << 8) | ((uint16_t)tmp_array[9]),
+            ((uint16_t)tmp_array[10] << 8) | ((uint16_t)tmp_array[11]));
+    printf(":%04X:%04X\r\n", ((uint16_t)tmp_array[12] << 8) | ((uint16_t)tmp_array[13]),
+            ((uint16_t)tmp_array[14] << 8) | ((uint16_t)tmp_array[15]));
 
 
-	printf("\r\nNETCFGLOCK : %x\r\n", getNETLCKR());
+    printf("\r\nNETCFGLOCK : %x\r\n", getNETLCKR());
 }
 
 #pragma GCC diagnostic pop

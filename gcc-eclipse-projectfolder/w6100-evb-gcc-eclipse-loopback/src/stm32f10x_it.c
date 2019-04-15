@@ -98,11 +98,11 @@ void TIM1_CC_IRQHandler(void){}
  */
 void TIM2_IRQHandler(void)
 {
-	if(TIM_GetITStatus(TIM2, TIM_IT_Update) == SET)
-	{
-		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-		Timer2_ISR();
-	}
+    if(TIM_GetITStatus(TIM2, TIM_IT_Update) == SET)
+    {
+        TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+        Timer2_ISR();
+    }
 }
 
 /*******************************************
