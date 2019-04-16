@@ -36,7 +36,6 @@ void Timer_Configuration(void)
 
     TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 
-
     /* TIM enable counter */
     TIM_Cmd(TIM2, ENABLE);
 
@@ -52,7 +51,7 @@ void Timer2_ISR(void)
 
     runled_msec++;
 
-    if(runled_msec >= 1000)
+    if(runled_msec == 1000)
     {
         runled_msec = 0;
         toggle_runled();
@@ -63,7 +62,6 @@ void Timer2_ISR(void)
     {
         msec_cnt = 0;
         sec_cnt++;
-
         devtime_sec++; // device time counter, Can be updated this counter value by time protocol like NTP.
     }
 
@@ -91,76 +89,76 @@ void Timer2_ISR(void)
 
 uint32_t getDevtime(void)
 {
-	return devtime_sec;
+    return devtime_sec;
 }
 
 void setDevtime(uint32_t timeval_sec)
 {
-	devtime_sec = timeval_sec;
+    devtime_sec = timeval_sec;
 }
 
 uint32_t getNow(void)
 {
-	return getDevtime();
+    return getDevtime();
 }
 
 uint32_t millis(void)
 {
-	return devtime_msec;
+    return devtime_msec;
 }
 
 uint32_t getDeviceUptime_day(void)
 {
-	return day_cnt;
+    return day_cnt;
 }
 
 uint32_t getDeviceUptime_hour(void)
 {
-	return hour_cnt;
+    return hour_cnt;
 }
 
 uint8_t getDeviceUptime_min(void)
 {
-	return min_cnt;
+    return min_cnt;
 }
 
 uint8_t getDeviceUptime_sec(void)
 {
-	return sec_cnt;
+    return sec_cnt;
 }
 
 uint16_t getDeviceUptime_msec(void)
 {
-	return msec_cnt;
+    return msec_cnt;
 }
 
 
 void set_phylink_time_check(uint8_t enable)
 {
-	if(enable == 1) // start
-	{
-		phylink_down_time_msec = 0; // counter variable clear
-	}
-	else // stop
-	{
-		;
-	}
+    if(enable == 1) // start
+    {
+        phylink_down_time_msec = 0; // counter variable clear
+    }
+    else // stop
+    {
+        ;
+    }
 
-	enable_phylink_check = enable;
+    enable_phylink_check = enable;
 }
 
 uint32_t get_phylink_downtime(void)
 {
-	return phylink_down_time_msec;
+    return phylink_down_time_msec;
 }
 
 void set_runled_msec(uint16_t setmsec)
 {
-	runled_msec = setmsec;
+    runled_msec = setmsec;
 }
 
 uint16_t get_runled_msec(void)
 {
-	return runled_msec;
+    return runled_msec;
 }
 
